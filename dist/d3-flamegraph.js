@@ -4884,6 +4884,7 @@ var flamegraph = function () {
   var sort = false;
   var inverted = false; // invert the graph direction
   var clickHandler = null;
+  var idHandler = null;
   var minFrameSize = 0;
   var detailsElement = null;
   var selfValue = false;
@@ -5337,7 +5338,7 @@ var flamegraph = function () {
     let delta = 0;
     const wantDelta = differential;
     forEachNode(node, function (n) {
-      n.id = id++;
+      n.id = idHandler ? idHandler(n.data) : id++;
       if (wantDelta) {
         delta = Math.abs(getDelta(n));
         if (maxDelta < delta) {
@@ -5672,6 +5673,12 @@ var flamegraph = function () {
       return chart
     }
     searchHandler = _;
+    return chart
+  };
+
+  chart.setIdHandler = function (_) {
+    if (!arguments.length) { return idHandler }
+    idHandler = _;
     return chart
   };
 
